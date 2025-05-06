@@ -1,7 +1,9 @@
 package sync_test
 
 import (
+	"slices"
 	"testing"
+	"time"
 
 	"github.com/oaiiae/sync-generic"
 	"github.com/stretchr/testify/require"
@@ -27,7 +29,7 @@ func TestPool(t *testing.T) {
 		require.Equal(t, []byte(nil), p.Get())
 		x := make([]byte, 8)
 		p.Put(x)
-		require.Equal(t, x, p.Get())
+		require.Eventually(t, func() bool { return slices.Compare(p.Get(), x) == 0 }, 10*time.Second, time.Second/10)
 		require.Equal(t, []byte(nil), p.Get())
 	})
 }

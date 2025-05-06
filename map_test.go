@@ -89,7 +89,7 @@ func TestMap(t *testing.T) {
 			return true
 		})
 
-		require.Len(t, ranged, 0)
+		require.Empty(t, ranged)
 	})
 
 	t.Run("Swap", func(t *testing.T) {

@@ -157,3 +157,21 @@ func TestMap(t *testing.T) {
 		})
 	})
 }
+
+func TestMapPanics(t *testing.T) {
+	t.Run("CompareAndSwap", func(t *testing.T) {
+		require.PanicsWithError(t, "runtime error: comparing uncomparable type []uint8", func() {
+			var m sync.Map[string, []byte]
+			m.Store("foo", []byte("hello"))
+			m.CompareAndSwap("foo", []byte("hello"), []byte("world"))
+		})
+	})
+
+	t.Run("CompareAndDelete", func(t *testing.T) {
+		require.PanicsWithError(t, "runtime error: comparing uncomparable type []uint8", func() {
+			var m sync.Map[string, []byte]
+			m.Store("foo", []byte("hello"))
+			m.CompareAndDelete("foo", []byte("hello"))
+		})
+	})
+}

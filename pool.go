@@ -2,7 +2,7 @@ package sync
 
 import "sync"
 
-// See [sync.Pool].
+// Pool is a generic wrapper of [sync.Pool].
 type Pool[T any] struct {
 	pool sync.Pool
 }

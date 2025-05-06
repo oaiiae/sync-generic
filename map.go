@@ -2,7 +2,7 @@ package sync
 
 import "sync"
 
-// See [sync.Map].
+// Map is a generic wrapper of [sync.Map].
 type Map[K, V any] struct {
 	smap sync.Map
 }
@@ -23,7 +23,7 @@ func (m *Map[K, V]) CompareAndDelete(key K, old V) (deleted bool) {
 
 // CompareAndSwap swaps the old and new values for key if the value stored in
 // the map is equal to old. The old value must be of a comparable type.
-func (m *Map[K, V]) CompareAndSwap(key K, old V, new V) (swapped bool) {
+func (m *Map[K, V]) CompareAndSwap(key K, old V, new V) (swapped bool) { //nolint: revive,predeclared // keep name new to match original implementation
 	return m.smap.CompareAndSwap(key, old, new)
 }
 
@@ -70,6 +70,7 @@ func (m *Map[K, V]) LoadOrStore(key K, value V) (actual V, loaded bool) {
 // block other methods on the receiver; even f itself may call any method on m.
 //
 // Range may be O(N) with the number of elements in the map even if f returns
+// false after a constant number of calls.
 func (m *Map[K, V]) Range(f func(key K, value V) bool) {
 	m.smap.Range(func(k, v any) bool {
 		key, _ := k.(K)
